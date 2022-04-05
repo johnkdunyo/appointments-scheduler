@@ -1,5 +1,5 @@
 /* eslint-disable require-jsdoc */
-class bookedAppointment {
+class BookedAppointment {
   constructor( id, userID, title, description, time, date, location) {
     this.id=id;
     this.userID=userID;
@@ -11,4 +11,4 @@ class bookedAppointment {
   }
 }
 
-module.exports = bookedAppointment;
+module.exports = BookedAppointment;

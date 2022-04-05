@@ -9,19 +9,15 @@ const options = {
 };
 
 const strategy = new JwtStrategy(options, async (payload, done) => {
-
-    try {
-        
-        // console.log(payload)
-        done(null, payload)
-
-    } catch (error) {
-        next(error)
-        done(error)
-    }
-})
+  try {
+    // console.log(payload)
+    done(null, payload);
+  } catch (error) {
+    done(error);
+  }
+});
 
 
-passport.use('jwt', strategy);
+passport.use("jwt", strategy);
 
 module.exports = passport;
