@@ -16,6 +16,9 @@ require("./utils/db")();
 
 
 
+// configure passport middleware
+require("./middlewares/passport");
+
 // configure middlewares
 app.use(express.json());
 app.use(logger('dev'));
@@ -30,12 +33,12 @@ app.use('/api/v1', router);
 
 
 // hanlde all uncaught errors ==> internal server error
-app.use((error, req, res, next) => {
+app.use((error, res) => {
     error.statusCode = error.statusCode || 500,
     error.message = error.message || "Internal server error",
-    res.status(statusCode.json({
+    res.status(error.statusCode).json({
         message: error.message
-    }))
+    });
 })
 
 const PORT = process.env.PORT || 5001;
