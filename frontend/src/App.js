@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Home, Login, Register, AddOneOnOneEvent, AddGroupEvent, EventSample  } from './pages';
 import AddEvent from './pages/AddEvent';
@@ -7,7 +7,7 @@ import AddEvent from './pages/AddEvent';
 
 function App() {
 
-  const isSignin = useSelector(state => state.isSignedIn);
+  // const isSignin = useSelector(state => state.isSignedIn);
 
   
   

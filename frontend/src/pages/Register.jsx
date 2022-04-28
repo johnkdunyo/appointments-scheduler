@@ -5,21 +5,24 @@ import Loader from '../components/Loader'
 
 
 const Register = () => {
+
   const initialFormState = {
     firstName: "",
     lastName: "",
     email: "",
     password: "",
     password2: ""
-  }
+  };
+
   const [ form, setForm] = useState(initialFormState);
 
   const handleChange =(e) => {
     setForm( {...form,  [e.target.name]: e.target.value})
-  }
+  };
 
   const onSubmitHandler = (e) => {
     e.preventDefault()
+    console.log(form);
 
     try {
 

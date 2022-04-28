@@ -1,11 +1,10 @@
-import { createStore, combineReducers } from 'redux';
-import reducers from './reducers/reducers.js'
+import {configureStore} from '@reduxjs/toolkit';
+import appointmentSlice from './reducers/appointmentSlice';
 
-// export const store = createStore(
-//     combineReducers({
-//         state: reducers
-//     }),  /* preloadedState, */
-//     +  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-// );
+const store = configureStore({
+    reducer: {
+        appointments: appointmentSlice,
+    }
+})
 
-export const store = createStore( reducers ,  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+export default store;

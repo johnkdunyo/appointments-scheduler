@@ -7,7 +7,8 @@ import { Link } from 'react-router-dom';
 
 const UserNav =() => {
 
-    const user = useSelector(state=> state.user);
+    // const user = useSelector(state=> state.user);
+    const user = 'jon'
 
     
     return (

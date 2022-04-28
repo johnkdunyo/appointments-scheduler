@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { format } from 'date-fns'
 
-const AppointmentsCard = () => {
+const AppointmentsCard = ({appointment}) => {
+    // console.log(appointment)
 
 
     const appointmentState = {
@@ -15,12 +17,33 @@ const AppointmentsCard = () => {
         location: "Facebook Live and Zoom",
         meetingLink: 'https://zoom.us/0RYhyss/',
         people: 20,
-
     }
 
+    // 0: "_id"
+    // 1: "title"
+    // 2: "description"
+    // 3: "location"
+    // 4: "duration"
+    // 5: "status"
+    // 6: "availabilities"
+    // 7: "createdAt"
+    // 8: "user"
+    // 9: "__v"
+    // 10: "bookedDate"
+    // length: 11
+
+    const date = new Date(appointment.bookedDate);
+    // appointment.bookedDate = date;
+
+    const tempAppoint = {...appointment}
+
+    tempAppoint.bookedDate =date.toDateString();
+
+    tempAppoint.time = date.toLocaleTimeString('en-US',
+    {timeZone:'UTC',hour12:true,hour:'numeric',minute:'numeric'})
     
 
-    const [appointment, setAppointment ] = useState(appointmentState);
+    // const [appointment, setAppointment ] = useState(appointmentState);
 
     // const [appStatus, setAppStatus ] = useState(false);
 
@@ -41,15 +64,15 @@ const AppointmentsCard = () => {
                 <div className={`card-body rounded event-detail event-detail-primary ${appointment.status}`}>
                     <div className="d-flex align-items-top justify-content-between">
                         <div>
-                            <h4 className="mb-4 mr-4">{appointment.title}</h4>                                        
-                            {/* <p className={`mb-2 text-primary font-weight-500 text-uppercase`}><i className="las la-user-friends pr-2"></i>{appointment.type}</p> */}
-                            <p className="mb-4 card-description">{appointment.description}</p>
-                            <p className="mb-2 text-primary"><i className="las la-clock mr-3 text-danger"></i>{appointment.time}</p>
-                            <p className="mb-2 text-primary"><i className="las la-calendar mr-3 text-danger"></i>{appointment.date}</p>
-                            <p className="mb-2 text-primary"><i className="las la-map-marker mr-3 text-danger"></i>{appointment.location}</p>
-                            <p className="mb-2 text-primary"><i className="las la-user-friends mr-3 text-danger"></i>{appointment.people} Participants</p>
+                            <h4 className="mb-4 mr-4">{tempAppoint.title}</h4>                                        
+                            {/* <p className={`mb-2 text-primary font-weight-500 text-uppercase`}><i className="las la-user-friends pr-2"></i>{tempAppoint.type}</p> */}
+                            <p className="mb-4 card-description">{tempAppoint.description}</p>
+                            <p className="mb-2 text-primary"><i className="las la-clock mr-3 text-danger"></i>{tempAppoint.time}</p>
+                            <p className="mb-2 text-primary"><i className="las la-calendar mr-3 text-danger"></i>{tempAppoint?.bookedDate}</p>
+                            <p className="mb-2 text-primary"><i className="las la-map-marker mr-3 text-danger"></i>{tempAppoint.location}</p>
+                            <p className="mb-2 text-primary"><i className="las la-user-friends mr-3 text-danger"></i>{tempAppoint.people} Participants</p>
                             <div className="d-flex align-items-center pt-4">
-                                <button className="btn btn-success info mr-3 px-xl-4">{appointment.estimatedDuration} mins</button>
+                                <button className="btn btn-success info mr-3 px-xl-4">{tempAppoint.duration} mins</button>
                                 <button className={`btn btn-outline-primary copy px-xl-4`} data-extra-toggle="copy" title="Copy to clipboard" data-toggle="tooltip"><i className="las la-link pr-2"></i>Event Link</button>
                                 <button className={`btn btn-outline-primary d-none turn-on px-xl-4`}>Turn On</button>
                             </div>

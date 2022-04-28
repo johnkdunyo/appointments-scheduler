@@ -20,6 +20,7 @@ require("./utils/db")();
 require("./middlewares/passport");
 
 // configure middlewares
+app.use(cors());
 app.use(express.json());
 app.use(logger('dev'));
 
