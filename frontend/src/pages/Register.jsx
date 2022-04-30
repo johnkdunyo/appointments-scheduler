@@ -1,10 +1,14 @@
 import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
 import Loader from '../components/Loader'
-
-
+import { useDispatch, useSelector } from 'react-redux'
+import { signUpUSer } from '../redux/reducers/userSlice'
+import { useNavigate } from 'react-router-dom'
 
 const Register = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const error = useSelector(state=>state.user.error);
 
   const initialFormState = {
     firstName: "",
@@ -15,22 +19,22 @@ const Register = () => {
   };
 
   const [ form, setForm] = useState(initialFormState);
+  const [isCreatingAccount, setisCreatingAccount] = useState(false);
 
   const handleChange =(e) => {
     setForm( {...form,  [e.target.name]: e.target.value})
   };
 
-  const onSubmitHandler = (e) => {
+  const onSubmitHandler = async(e) => {
+    setisCreatingAccount(true)
     e.preventDefault()
-    console.log(form);
-
-    try {
-
-      
-    } catch (error) {
-      
+    const response = await dispatch(signUpUSer(form)).unwrap()
+    console.log(response)
+    if(response.status === 200){
+      console.log('okay');
+      setisCreatingAccount(false);
+      navigate('/home');
     }
-
     
   }
   return (
@@ -126,13 +130,19 @@ const Register = () => {
                           </div>
                         )}
 
+                        {error && (
+                          <div className='error-message mb-3'>
+                          <p>{error}</p>
+                        </div>
+                        )}
+
 
                  
 
                       </div>
-                      <button type='submit' className='btn btn-primary'>Create Account</button>
+                      <button type='submit' className='btn btn-primary'>{isCreatingAccount ? 'Creating account ...':'Create Account'}</button>
                       <p className='mt-3'>
-                          Have an account already?  <Link to="/login">Sign In</Link>
+                          Have an account already?  <Link to="/">Sign In</Link>
                       </p>
 
       

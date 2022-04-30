@@ -8,7 +8,7 @@ exports.addAppointment = async (req, res, next) => {
         // check if user has logged in
         const user = req.user;
         if(!user){
-            return res.status(400).json({
+            return res.status(401).json({
                 message: "User must be login to access this resource"
             })
         };
@@ -36,7 +36,7 @@ exports.getAllAppointments = async (req, res, next) => {
         // we get all appointments by the users id
         const user = req.user;
         if(!user){
-            return res.status(400).json({
+            return res.status(401).json({
                 message: "User must be logged in to access this resource"
             })
         };
@@ -60,13 +60,13 @@ exports.getAllAppointmentByID = async(req, res, next) => {
     try {
         const user = req.user;
         if(!user){
-            return res.status(400).json({
+            return res.status(401).json({
                 message: "User must be logged in to access this resource"
             })
         };
         // check is the id passed is valid
         if(!mongoose.isValidObjectId(req.params.id)){
-            return res.status(400).json({
+            return res.status(401).json({
                 message: "Query failed, no appointment with id provided exists"
             });
         }
@@ -91,7 +91,7 @@ exports.bookAppointment = async(req,res, next) => {
     try {
         // first check if id is valid and return error
         if(!mongoose.isValidObjectId(req.params.id)){
-            return res.status(400).json({
+            return res.status(401).json({
                 message: "Invalid appointment id passed"
             })
         }
@@ -100,7 +100,7 @@ exports.bookAppointment = async(req,res, next) => {
 
         // check if the date the client passed if among the list
         if(!appointment.availabilities.includes(req.body.bookedDate)){
-            return res.status(400).json({
+            return res.status(401).json({
                 message: "Booked date can be found in appointments availabilities"
             })
         }

@@ -1,14 +1,25 @@
 import React, { useState} from 'react';
 import { Link } from 'react-router-dom';
 import Loader from '../components/Loader';
+import { useDispatch, useSelector } from 'react-redux';
+import { signInUser, setCurrentUser } from '../redux/reducers/userSlice';
+import { useNavigate } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
 
 const Login = () => {
+  const dispatch = useDispatch();
+  let navigate = useNavigate()
+  const error = useSelector(state=>state.user.error);
+  const status = useSelector(state=>state.user.status);
+  
+  
 
   const initialFormState = {
     email: "",
     password: ""
   }
   const [form, setForm ] = useState(initialFormState)
+  const [isSignIn, setIsSignIn] = useState(false)
   // const [checkBox, setCheckBox] = useState(false)
 
 
@@ -16,9 +27,16 @@ const Login = () => {
     setForm( {...form, [e.target.name]: e.target.value})
   }
 
-  const onSubmitHandler = (e) => {
+  const onSubmitHandler = async(e) => {
+    setIsSignIn(true)
     e.preventDefault();
-    console.log(form);
+    // console.log(form);
+    const response = await dispatch(signInUser(form)).unwrap()
+    // console.log(response)
+    if(response.data){
+      navigate('/home')
+    }
+    setIsSignIn(false)
   }
 
 
@@ -44,7 +62,7 @@ const Login = () => {
                           <div className='floating-input form-group'>
                             <input
                               className='form-control'
-                              type='text'
+                              type='email'
                               name='email'
                               id='email'
                               onChange={handleChange}
@@ -68,6 +86,15 @@ const Login = () => {
                           </div>
                         </div>
 
+                        {error && (
+                          <div className='col-lg-12'>
+                          <p className='text-left text-danger'>{error}</p>
+                        </div>
+                        )}
+
+
+                      
+
                         <div className="col-lg-6">
                         <div className="custom-control custom-checkbox mb-3 text-left">
                           <input
@@ -84,7 +111,7 @@ const Login = () => {
                       </div>
 
                       </div>
-                      <button type='submit' className='btn btn-primary'>Sign In</button>
+                      <button type='submit' className='btn btn-primary'>{!isSignIn ? 'Sign In' : 'Signing in...'}</button>
                       <p className='mt-3'>
                           Dont have an account? <Link to="/signup">Sign Up</Link>
                       </p>

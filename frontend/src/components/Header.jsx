@@ -1,14 +1,16 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { logOutCurrentUser } from '../redux/reducers/userSlice';
 
 
 
 
 const UserNav =() => {
+    const dispatch = useDispatch();
 
     // const user = useSelector(state=> state.user);
-    const user = 'jon'
+    const userName = useSelector(state=>state.user.user.data.firstName)
 
     
     return (
@@ -16,7 +18,7 @@ const UserNav =() => {
         <div  className="search-toggle dropdown-toggle d-flex align-items-center" id="dropdownMenuButton3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <img src="../assets/images/user/01.jpg" className="avatar-40 img-fluid rounded" alt="user" />
             <div className="caption ml-3">
-                <h6 className="mb-0 line-height">{user.name}<i className="las la-angle-down ml-3"></i></h6>
+                <h6 className="mb-0 line-height">{userName}<i className="las la-angle-down ml-3"></i></h6>
             </div>
         </div>
         <div className="iq-sub-dropdown dropdown-menu user-dropdown" aria-labelledby="dropdownMenuButton3">
@@ -36,7 +38,7 @@ const UserNav =() => {
                             </div>
                         </Link>
                     </div>
-                    <Link to="/login" className="right-ic p-3 border-top btn-block position-relative text-center" role="button">
+                    <Link to="/" className="right-ic p-3 border-top btn-block position-relative text-center" role="button" onClick={()=>dispatch(logOutCurrentUser())}>
                         Logout
                     </Link>
                 </div>

@@ -8,10 +8,11 @@ const initialState = {
 }
 
 const baseURL = 'https://jons-appointments-scheduler.herokuapp.com/api/v1';
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNTdlOWYzMDg5ZmU4NTdiNTk4ZDFlNyIsImZpcnN0TmFtZSI6ImpvbiIsImVtYWlsIjoiam9uZGV4dGVyMjBAZ21haWwuY29tIiwiaWF0IjoxNjUxMTMyMjIyLCJleHAiOjE2NTEzMDUwMjJ9.iyY75e4b_qtjYUxfIh6uQn5_G4JpLY8tgcwni-baI_o'
+const token = localStorage.getItem('user_token')
 const config = {
     headers: { Authorization: `Bearer ${token}` }
 };
+console.log(config)
 
 export const fetchAllAppointments = createAsyncThunk('appointments/fetchAppointments', async() => {
     try {
@@ -19,6 +20,17 @@ export const fetchAllAppointments = createAsyncThunk('appointments/fetchAppointm
         return response.data
         
     } catch (error) {
+        return error.message
+    }
+})
+
+export const addAppointment = createAsyncThunk('appointments/addAppointment', async(appointmentData)=>{
+    console.log(appointmentData)
+    try{
+        const response = await axios.post(`${baseURL}/appointments/add`, appointmentData, config);
+        console.log(response)
+        return response
+    }catch(error){
         return error.message
     }
 })
@@ -41,8 +53,17 @@ const appointmentSlice = createSlice({
         })
         builder.addCase(fetchAllAppointments.fulfilled, (state, action)=>{
             state.status = 'successful';
-            console.log(action)
+            // console.log(action)
             state.appointments = action.payload.data;
+        })
+
+        builder.addCase(addAppointment.rejected, (state, action)=>{
+            state.status = 'rejected';
+            state.error = action.payload
+        })
+        builder.addCase(addAppointment.fulfilled, (state, action)=>{
+            state.status ='successful';
+            console.log(action)
         })
     }
 });

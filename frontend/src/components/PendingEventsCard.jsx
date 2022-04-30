@@ -1,15 +1,28 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const event = {
-    title: "Project A014 Meeting",
-    description: "Meeting to consider the requirements and prepare the workflow. Client and all developers are joining",
-    location: "BSL Office Annex, East Legon",
-    time: "09:45 PM - 10:45 PM",
-    date: "May 25, 2022"
-}
+// const event = {
+//     title: "Project A014 Meeting",
+//     description: "Meeting to consider the requirements and prepare the workflow. Client and all developers are joining",
+//     location: "BSL Office Annex, East Legon",
+//     time: "09:45 PM - 10:45 PM",
+//     date: "May 25, 2022"
+// }
 
-const PendingEventsCard = () => {
+
+
+const PendingEventsCard = ({appointment}) => {
+    const event  = {...appointment}
+    console.log(appointment.availabilities)
+
+    const appointmentsAvailabilities = appointment.availabilities.map(availability =>  (
+        <p className="mb-2 text-info" key={appointment.availabilities.indexOf(availability)}>
+            {console.log(appointment.availabilities.indexOf(availability))}
+            <i className="las la-clock mr-3"></i>
+            {availability}
+        </p>
+    ));
+
   return (
     <React.Fragment>
         <div className="col-lg-4 col-md-6">
@@ -26,8 +39,10 @@ const PendingEventsCard = () => {
                     </div>
                     <h4 className="my-2">{event.title}</h4>   
                     <p className="mb-4 card-description">{event.description}</p>
-                    <p className="mb-2 text-info"><i className="las la-clock mr-3"></i>{event.time}</p>
+
                     <p className="mb-2 text-info"><i className="las la-map-marker mr-3"></i>{event.location}</p>
+                    {/* render the availabilities */}
+                    {appointmentsAvailabilities}
                 </div>
             </div>
         </div>

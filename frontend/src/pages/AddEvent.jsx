@@ -11,6 +11,8 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 
 import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch } from 'react-redux'
+import { addAppointment } from '../redux/reducers/appointmentSlice'
 
 
 const createEventForm = {
@@ -21,14 +23,15 @@ const createEventForm = {
     link: "",
     custom_location: "",
     custom_duration: "",
+    availabilities: []
   }
 
-const selectedDates = []
+
 
   
 
 const AddEvent = () => {
-
+  const dispatch = useDispatch();
   // navigator
   const navigator = useNavigate()
 
@@ -36,7 +39,7 @@ const AddEvent = () => {
     const [ event, setEvent ] = useState(createEventForm);
     const [ isSubmitted, setIsSubmitted] = useState(false)
 
-    const [ date, setDate ] = useState(selectedDates);
+    const [ date, setDate ] = useState(createEventForm.availabilities);
 
 
     // helper methods
@@ -62,7 +65,7 @@ const AddEvent = () => {
 
 
     const handleDateClick =(arg) => {
-        console.log(arg)
+        // console.log(arg)
         // console.log(arg)
         const selectedDate_utc = arg.start.toUTCString()
         
@@ -78,17 +81,23 @@ const AddEvent = () => {
         }else{
           arg.jsEvent.srcElement.style.backgroundColor = 'green';
           setDate([...date, selectedDate_utc])
+          event.availabilities.push(selectedDate_utc)
         }
-    
+      console.log(event)
     
     };
     
       const unSelectHandler =(arg) => {
-        console.log(arg)
+        // console.log(arg)
     };
 
-    const onModalConfirmClick = () => {
-      navigator('/')
+    const onModalConfirmClick = async() => {
+      console.log(event)
+      const response = await dispatch(addAppointment(event));
+      if(response){
+        navigator('/')
+      }
+      
     }
 
 
@@ -256,8 +265,8 @@ const AddEvent = () => {
                             <p className="mb-2 text-primary"><i className="las la-map-marker mr-3"></i>{event.location === "Physical location" ? event.custom_location : event.location }</p>
 
                             <div><h4 className='my-2 mt-3'>Selected Availabilies</h4></div>
-                            { date && ( 
-                                date.map((val, ind) => {
+                            { event.availabilities && ( 
+                                event.availabilities.map((val, ind) => {
                                     return (<p className='mb-2 text-primary' key={ind}>{val}</p>)
                                 })
                             )}
@@ -288,8 +297,8 @@ const AddEvent = () => {
                                 <p className="mb-2 text-primary"><i className="las la-map-marker mr-3"></i>{event.location === 'Physical location' ? event.custom_location : event.location}</p>
 
                                 <div><h4 className='my-2 mt-3'>Selected Availabilies</h4></div>
-                                { date && ( 
-                                    date.map((val, ind) => {
+                                { event.availabilities && ( 
+                                    event.availabilities.map((val, ind) => {
                                         return (<p className='mb-2 text-primary' key={ind}>{val}</p>)
                                     })
                                 )}

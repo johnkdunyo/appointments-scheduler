@@ -12,7 +12,7 @@ exports.userSignUp = async(req, res, next) => {
         // check if email exist
         const userEmail = await User.findOne({email: req.body.email}).exec();
         if(userEmail){
-            return res.status(400).json({
+            return res.status(401).json({
                 message: "Email exists already, please use another one."
             });
         };
@@ -65,7 +65,7 @@ exports.userSignIn = async (req, res, next) => {
         const user = await User.findOne({email: req.body.email}).exec();
 
         if(!user){
-            return res.status(400).json({
+            return res.status(401).json({
                 message: "Email entered does not exist. Please procceed to create an account"
             })
         };
@@ -73,7 +73,7 @@ exports.userSignIn = async (req, res, next) => {
         //check password
         const passCheck = await bcrypt.compare(req.body.password, user.password);
         if(!passCheck){
-            return res.status(400).json({
+            return res.status(401).json({
                 message: "Password incorrect, please check and enter again"
             })
         };
